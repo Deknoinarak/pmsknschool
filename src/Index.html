@@ -66,7 +66,16 @@
             </svg>
             กำลังประมวลผล...
           </div>
-          <div id="displayArea" class="mt-4" style="diplay: none"></div>
+          <div
+            id="displaySuccess1"
+            class="mt-4 text-emerald-600"
+            style="display: none"
+          ></div>
+          <div
+            id="displayError1"
+            class="mt-4 text-red-600"
+            style="display: none"
+          ></div>
         </div>
         <div class="mt-2">
           <div class="grid gap-2">
@@ -109,8 +118,16 @@
         </div>
         <div class="mt-2">
           <div class="grid gap-2">
-            <div><span class="font-bold">ชื่อ-นามสกุล:</span> TEST 1</div>
-            <div><span class="font-bold">กลุ่มการประเมินที่:</span> 1</div>
+            <div>
+              <span class="font-bold">ชื่อ-นามสกุล: </span
+              ><span id="INFO_REPLACE_NAME_HERE">{INFO_REPLACE_NAME_HERE}</span>
+            </div>
+            <div>
+              <span class="font-bold">กลุ่มการประเมินที่: </span
+              ><span id="INFO_REPLACE_GROUP_HERE"
+                >{INFO_REPLACE_GROUP_HERE}</span
+              >
+            </div>
           </div>
           <div class="flex gap-4 mt-8">
             <button
@@ -143,8 +160,29 @@
           </h1>
         </div>
         <div class="mt-2">
-          <div class="grid gap-2">
-            <div class="flex items-center gap-x-3">
+          <div class="grid gap-2" id="evaluateeOptionsContainer">
+            <div
+            id="loadingDisplay3"
+            class="mt-4 flex items-center gap-2 text-gray-800"
+            style="display: none"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-loader-circle-icon lucide-loader-circle animate-spin size-5"
+            >
+              <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+            </svg>
+            กำลังประมวลผล...
+          </div>
+            <div class="flex items-center gap-x-3 hidden!">
               <input
                 id="evaluatee-1"
                 type="radio"
@@ -155,19 +193,6 @@
                 for="evaluatee-1"
                 class="block text-sm/6 font-medium text-gray-900 w-full"
                 >TEST 1</label
-              >
-            </div>
-            <div class="flex items-center gap-x-3">
-              <input
-                id="evaluatee-2"
-                type="radio"
-                name="evaluatee"
-                class="relative size-4 appearance-none rounded-full border border-gray-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white not-checked:before:hidden checked:border-indigo-600 checked:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 forced-colors:appearance-auto forced-colors:before:hidden"
-              />
-              <label
-                for="evaluatee-2"
-                class="block text-sm/6 font-medium text-gray-900 w-full"
-                >TEST 2</label
               >
             </div>
           </div>
@@ -192,41 +217,45 @@
     </div>
 
     <script>
+      let userData = null; // Global variable to store user data
+
+      const loginCard = $("div#loginCard");
+      const check1Card = $("div#checkInfo1Card");
+      const chooseEvaluateeCard = $("div#chooseEvaluateeCard");
+
       function search() {
         const telephone = $("input#phone").val();
         const idcard = $("input#idcard").val();
         const loading = $("div#loadingDisplay1");
-        const display = document.getElementById("displayArea");
+        const successDis = $("div#displaySuccess1");
+        const errorDis = $("div#displayError1");
 
-        navigate(0, 1); // Navigate to the check info card
+        // navigate(0, 1); // Navigate to the check info card
 
+        successDis.hide();
+        errorDis.hide();
         loading.show();
 
         // This calls the .gs function by name
         google.script.run
           .withSuccessHandler(function (response) {
             loading.hide();
-            console.log(response); // Log the response for debugging
-            display.classList.add("text-emerald-600");
-            display.show();
-            display.innerHTML =
-              "เข้าสู่ระบบสำเร็จ กำลังนำท่านไปยังหน้าต่อไป...";
+            userData = response; // Store the user data in the global variable
+            successDis.show();
+            successDis.html("เข้าสู่ระบบสำเร็จ กำลังนำท่านไปยังหน้าต่อไป...");
             navigate(0, 1);
+            successDis.hide();
+            errorDis.hide();
           })
           .withFailureHandler(function (err) {
             loading.hide();
-            display.classList.add("text-red-600");
-            display.show();
-            display.innerHTML = "พบปัญหา: " + err.message;
+            errorDis.show();
+            errorDis.html(err.message);
           })
           .loginEvaluator(telephone, idcard);
       }
 
       function navigate(currentPage, toPage) {
-        const loginCard = $("div#loginCard");
-        const check1Card = $("div#checkInfo1Card");
-        const chooseEvaluateeCard = $("div#chooseEvaluateeCard");
-
         switch (currentPage) {
           case 0:
             loginCard.hide();
@@ -246,20 +275,72 @@
 
         switch (toPage) {
           case 0:
+            userData = null; // Clear user data when navigating back to login
             loginCard.show();
             break;
 
           case 1:
+            updateUserCheckInfo(); // Update the check info card with user data before showing it
             check1Card.show();
             break;
 
           case 2:
+            getEvaluatees(); // Fetch the evaluatees for the evaluator before showing the card
             chooseEvaluateeCard.show();
             break;
 
           default:
             break;
         }
+      }
+
+      function updateUserCheckInfo() {
+        console.log("Updating user check info with data:", userData);
+        if (!userData) return; // If userData is not set, do nothing
+
+        // Update the check info card with user data
+        check1Card.find("span#INFO_REPLACE_NAME_HERE").html(userData[1]);
+        check1Card.find("span#INFO_REPLACE_GROUP_HERE").html(userData[4]);
+      }
+
+      function getEvaluatees() {
+        if (!userData) return; // If userData is not set, do nothing
+
+        let evaluatees = null;
+
+        $("div#loadingDisplay3").show();
+
+        // This calls the .gs function by name
+        google.script.run
+          .withSuccessHandler(function (response) {
+            listEvaluatees(response); // Populate the evaluatee options in the UI
+            console.log("Received evaluatees:", response);
+          })
+          .withFailureHandler(function (err) {
+            loading.hide();
+            errorDis.show();
+            errorDis.html(err.message);
+          })
+          .getEvaluatees();
+      }
+
+      function listEvaluatees(evaluatees) {
+        $.each(evaluatees, function (index, evaluatee) {
+          const radioInput = $(
+            `<input id="evaluatee-${index}" type="radio" name="evaluatee" class="relative size-4 appearance-none rounded-full border border-gray-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white not-checked:before:hidden checked:border-indigo-600 checked:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 forced-colors:appearance-auto forced-colors:before:hidden">`,
+          );
+          const label = $(
+            `<label for="evaluatee-${index}" class="block text-sm/6 font-medium text-gray-900 w-full">${evaluatee[1]}</label>`,
+          );
+          const container = $(
+            `<div class="flex items-center gap-x-3"></div>`,
+          ).append(radioInput, label);
+          chooseEvaluateeCard
+            .find("div#evaluateeOptionsContainer")
+            .append(container);
+        });
+
+        $("div#loadingDisplay3").hide();
       }
     </script>
   </body>

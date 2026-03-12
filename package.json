@@ -2,16 +2,22 @@
   "name": "pmsknschool",
   "version": "1.0.0",
   "description": "",
-  "license": "ISC",
-  "author": "",
-  "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tailwindcss -i ./css/input.css -o ./css/output.css --minify",
-    "dev": "tailwindcss -i ./css/input.css -o ./css/output.css --watch",
-    "dev:google": "clasp push --watch"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Deknoinarak/pmsknschool.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Deknoinarak/pmsknschool/issues"
+  },
+  "homepage": "https://github.com/Deknoinarak/pmsknschool#readme",
   "dependencies": {
     "@tailwindcss/cli": "^4.2.1",
     "@types/google-apps-script": "^2.0.8",

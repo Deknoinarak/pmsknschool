@@ -1,4 +1,4 @@
-.clasp.json
 src/appsscript.json
-src
+src/Code.js
+.clasp.json
 node_modules/

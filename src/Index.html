@@ -19,62 +19,218 @@
     />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   </head>
-  <body
-    class="font-sarabun bg-gray-100 w-full h-full flex flex-col items-center justify-center"
-  >
-    <div class="container p-5 flex flex-col items-center justify-center h-full">
-      <div>
-        <div
-          class="text-lg font-bold absolute text-center top-12 left-0 w-full text-gray-600"
-        >
-          เว็ปสำหรับผู้ประเมิน
-        </div>
-        <div class="flex items-center mb-8 gap-2">
-          <img
-            src="https://i.ibb.co/fVQxC5Hk/Untitled-design.png"
-            alt="โรงเรียนเตรียมอุดมศึกษาน้อมเกล้ากุนนที"
-            class="h-12 aspect-square sm:h-20"
-          />
-          <div>
-            <div class="text-indigo-900 font-bold sm:text-xl">
-              โรงเรียนเตรียมอุดมศึกษาน้อมเกล้ากุนนที
-            </div>
-            <div class="text-indigo-900 text-xs sm:text-base">
-              TRIAMUDOMSUKSANOMKLAOKUNNATEE SCHOOL
-            </div>
+  <body class="font-sarabun bg-gray-100 w-full h-full">
+    <div
+      class="container px-5 py-10 flex flex-col items-center justify-center min-h-full mx-auto"
+    >
+      <div class="flex items-center mb-8 gap-2">
+        <img
+          src="https://i.ibb.co/fVQxC5Hk/Untitled-design.png"
+          alt="โรงเรียนเตรียมอุดมศึกษาน้อมเกล้ากุนนที"
+          class="h-12 aspect-square sm:h-20"
+        />
+        <div>
+          <div class="text-indigo-900 font-bold sm:text-xl">
+            โรงเรียนเตรียมอุดมศึกษาน้อมเกล้ากุนนที
+          </div>
+          <div class="text-indigo-900 text-xs sm:text-base">
+            TRIAMUDOMSUKSANOMKLAOKUNNATEE SCHOOL
           </div>
         </div>
-        <div class="bg-white w-full max-w-md p-5 rounded-lg shadow-sm">
-          <div class="flex flex-col gap-3 mb-8 mt-3">
-            <h1 class="text-2xl text-center">ระบบประเมินผลผู้ปฏิบัติงาน</h1>
+      </div>
+      <div
+        id="loginCard"
+        class="bg-white w-full max-w-md p-5 rounded-lg shadow-sm border-y-5 border-t-pink-300 border-b-blue-300"
+      >
+        <div class="flex flex-col gap-2 mb-8 mt-3">
+          <h1 class="text-2xl text-center">ระบบประเมินผลผู้ปฏิบัติงาน</h1>
+          <h1 class="text-sm text-center">สำหรับผู้ประเมิน</h1>
+        </div>
+        <div class="mt-2">
+          <div class="grid gap-2">
+            <input
+              id="phone"
+              type="text"
+              name="phone"
+              autocomplete="tel"
+              placeholder="เบอร์โทรศัพท์ 10 หลัก"
+              class="block text-center w-full rounded-md bg-white h-10 px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-blue-600 focus:ring-2 focus:ring-blue-600/50 transition-all"
+            />
+            <input
+              id="idcard"
+              type="password"
+              name="idcard"
+              placeholder="หมายเลขประจำตัวประชาชน 13 หลัก"
+              class="block text-center w-full rounded-md bg-white h-10 px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-blue-600 focus:ring-2 focus:ring-blue-600/50 transition-all"
+            />
           </div>
-          <div class="mt-2">
-            <div class="grid gap-2">
-              <input
-                id="phone"
-                type="text"
-                name="phone"
-                autocomplete="tel"
-                placeholder="เบอร์โทรศัพท์ 10 หลัก"
-                class="block text-center w-full rounded-md bg-white h-10 px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-blue-600 focus:ring-2 focus:ring-blue-600/50 transition-all"
-              />
-              <input
-                id="idcard"
-                type="password"
-                name="idcard"
-                placeholder="หมายเลขประจำตัวประชาชน 13 หลัก"
-                class="block text-center w-full rounded-md bg-white h-10 px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-blue-600 focus:ring-2 focus:ring-blue-600/50 transition-all"
-              />
-            </div>
+          <button
+            type="submit"
+            class="rounded-md bg-blue-600 px-3 py-2 h-10 text-base font-semibold text-white shadow-xs hover:bg-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-all cursor-pointer w-full mt-3"
+            onclick="search()"
+          >
+            เข้าสู่ระบบ
+          </button>
+          <div id="displayArea"></div>
+        </div>
+      </div>
+
+      <div
+        id="checkInfo1Card"
+        class="bg-white w-full max-w-md p-5 rounded-lg shadow-sm border-y-5 border-t-pink-300 border-b-blue-300"
+        style="display: none"
+      >
+        <div class="flex flex-col gap-2 mb-8 mt-3">
+          <h1 class="text-2xl text-center">โปรดตรวจสอบข้อมูลของท่าน</h1>
+          <h1 class="text-sm text-center">
+            หากถูกต้องโปรดคลิกปุ่มดำเนินการต่อ
+          </h1>
+        </div>
+        <div class="mt-2">
+          <div class="grid gap-2">
+            <div><span class="font-bold">ชื่อ-นามสกุล:</span> TEST 1</div>
+            <div><span class="font-bold">กลุ่มการประเมินที่:</span> 1</div>
+          </div>
+          <div class="flex gap-4 mt-8">
             <button
               type="submit"
-              class="rounded-md bg-blue-600 px-3 py-2 h-10 text-base font-semibold text-white shadow-xs hover:bg-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-all cursor-pointer w-full mt-3"
+              class="rounded-md bg-gray-600 px-3 py-2 h-10 text-base font-semibold text-white shadow-xs hover:bg-gray-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 transition-all cursor-pointer w-full"
+              onclick="navigate(1, 0)"
             >
-              เข้าสู่ระบบ
+              ย้อนกลับ
+            </button>
+            <button
+              type="submit"
+              class="rounded-md bg-blue-600 px-3 py-2 h-10 text-base font-semibold text-white shadow-xs hover:bg-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-all cursor-pointer w-full"
+              onclick="navigate(1, 2)"
+            >
+              ดำเนินการต่อ
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="chooseEvaluateeCard"
+        style="display: none"
+        class="bg-white w-full max-w-md p-5 rounded-lg shadow-sm border-y-5 border-t-pink-300 border-b-blue-300"
+      >
+        <div class="flex flex-col gap-2 mb-8 mt-3">
+          <h1 class="text-2xl text-center">โปรดเลือกผู้ที่ต้องการจะประเมิน</h1>
+          <h1 class="text-sm text-center">
+            เลือกเพียงคนเดียวและกดเริ่มการประเมิน
+          </h1>
+        </div>
+        <div class="mt-2">
+          <div class="grid gap-2">
+            <div class="flex items-center gap-x-3">
+              <input
+                id="evaluatee-1"
+                type="radio"
+                name="evaluatee"
+                class="relative size-4 appearance-none rounded-full border border-gray-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white not-checked:before:hidden checked:border-indigo-600 checked:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 forced-colors:appearance-auto forced-colors:before:hidden"
+              />
+              <label
+                for="evaluatee-1"
+                class="block text-sm/6 font-medium text-gray-900 w-full"
+                >TEST 1</label
+              >
+            </div>
+            <div class="flex items-center gap-x-3">
+              <input
+                id="evaluatee-2"
+                type="radio"
+                name="evaluatee"
+                class="relative size-4 appearance-none rounded-full border border-gray-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white not-checked:before:hidden checked:border-indigo-600 checked:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 forced-colors:appearance-auto forced-colors:before:hidden"
+              />
+              <label
+                for="evaluatee-2"
+                class="block text-sm/6 font-medium text-gray-900 w-full"
+                >TEST 2</label
+              >
+            </div>
+          </div>
+          <div class="flex gap-4 mt-8">
+            <button
+              type="submit"
+              class="rounded-md bg-gray-600 px-3 py-2 h-10 text-base font-semibold text-white shadow-xs hover:bg-gray-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 transition-all cursor-pointer w-full"
+              onclick="navigate(2, 0)"
+            >
+              ยกเลิก
+            </button>
+            <button
+              type="submit"
+              class="rounded-md bg-blue-600 px-3 py-2 h-10 text-base font-semibold text-white shadow-xs hover:bg-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-all cursor-pointer w-full"
+              onclick="navigate(2, 3)"
+            >
+              เริ่มการประเมิน
             </button>
           </div>
         </div>
       </div>
     </div>
+
+    <script>
+      function search() {
+        const telephone = $("input#phone").val();
+        const idcard = $("input#idcard").val();
+        const display = document.getElementById("displayArea");
+
+        navigate(0, 1); // Navigate to the check info card
+
+        display.innerHTML = "Searching...";
+
+        // This calls the .gs function by name
+        google.script.run
+          .withSuccessHandler(function (response) {
+            console.log(response); // Log the response for debugging
+            display.innerHTML = response; // Update UI with the result
+          })
+          .withFailureHandler(function (err) {
+            display.innerHTML = "Error: " + err.message;
+          })
+          .loginEvaluator(telephone, idcard);
+      }
+
+      function navigate(currentPage, toPage) {
+        const loginCard = $("div#loginCard");
+        const check1Card = $("div#checkInfo1Card");
+        const chooseEvaluateeCard = $("div#chooseEvaluateeCard");
+
+        switch (currentPage) {
+          case 0:
+            loginCard.hide();
+            break;
+
+          case 1:
+            check1Card.hide();
+            break;
+
+          case 2:
+            chooseEvaluateeCard.hide();
+            break;
+
+          default:
+            break;
+        }
+
+        switch (toPage) {
+          case 0:
+            loginCard.show();
+            break;
+
+          case 1:
+            check1Card.show();
+            break;
+
+          case 2:
+            chooseEvaluateeCard.show();
+            break;
+
+          default:
+            break;
+        }
+      }
+    </script>
   </body>
 </html>

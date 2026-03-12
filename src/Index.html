@@ -162,27 +162,27 @@
         <div class="mt-2">
           <div class="grid gap-2" id="evaluateeOptionsContainer">
             <div
-            id="loadingDisplay3"
-            class="mt-4 flex items-center gap-2 text-gray-800"
-            style="display: none"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-loader-circle-icon lucide-loader-circle animate-spin size-5"
+              id="loadingDisplay3"
+              class="mt-4 flex items-center gap-2 text-gray-800 w-full justify-center text-center"
+              style="display: none"
             >
-              <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-            </svg>
-            กำลังประมวลผล...
-          </div>
-            <div class="flex items-center gap-x-3 hidden!">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-loader-circle-icon lucide-loader-circle animate-spin size-5"
+              >
+                <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+              </svg>
+              กำลังประมวลผล...
+            </div>
+            <div class="items-center gap-x-3 hidden">
               <input
                 id="evaluatee-1"
                 type="radio"
@@ -230,7 +230,7 @@
         const successDis = $("div#displaySuccess1");
         const errorDis = $("div#displayError1");
 
-        // navigate(0, 1); // Navigate to the check info card
+        // navigate(0, 2); // Navigate to the check info card
 
         successDis.hide();
         errorDis.hide();
